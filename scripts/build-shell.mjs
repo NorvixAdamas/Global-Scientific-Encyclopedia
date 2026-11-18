@@ -80,7 +80,7 @@ const head = `<!DOCTYPE html>
 <meta property="og:title" content="Global Scientific Encyclopedia V2.0" />
 <meta property="og:description" content="Hệ tri thức hóa học, vật liệu và dược học có thể kiểm chứng: dữ liệu biên soạn, truy vấn trực tiếp và liên kết nguồn mở." />
 <meta property="og:locale" content="vi_VN" />
-<link rel="canonical" href="https://papaya-eclair-e44179.netlify.app/" />
+<link rel="canonical" href="https://norvixadamas.github.io/To-n-Th-H-a-H-c-V-t-L-i-u/" />
 <link rel="preconnect" href="https://pubchem.ncbi.nlm.nih.gov" crossorigin />
 <link rel="preconnect" href="https://www.ebi.ac.uk" crossorigin />
 <link rel="preconnect" href="https://rest.uniprot.org" crossorigin />
@@ -90,7 +90,7 @@ const head = `<!DOCTYPE html>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23fff'%3E%E2%9A%97%3C/text%3E%3C/svg%3E" />
 ${V2_CSS.map((href) => `<link rel="stylesheet" href="${href}" />`).join("\n")}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"Global Scientific Encyclopedia","alternateName":"Bách khoa Hóa học Vật liệu","url":"https://papaya-eclair-e44179.netlify.app/","inLanguage":["vi","en"],"potentialAction":{"@type":"SearchAction","target":"https://papaya-eclair-e44179.netlify.app/#/search?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"Global Scientific Encyclopedia","alternateName":"Bách khoa Hóa học Vật liệu","url":"https://norvixadamas.github.io/To-n-Th-H-a-H-c-V-t-L-i-u/","inLanguage":["vi","en"],"potentialAction":{"@type":"SearchAction","target":"https://norvixadamas.github.io/To-n-Th-H-a-H-c-V-t-L-i-u/#/search?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 </head>
 <body class="v2">

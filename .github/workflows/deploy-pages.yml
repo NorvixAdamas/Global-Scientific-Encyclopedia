@@ -29,10 +29,29 @@ jobs:
         with:
           enablement: true
 
-      - name: Upload static site (repository root, no build step)
+      - name: Stage static site (no build step)
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '/.git/' \
+            --exclude '/.github/' \
+            --exclude '/tests/' \
+            --exclude '/scripts/' \
+            --exclude '/netlify/' \
+            --exclude '/node_modules/' \
+            --exclude '/.freebuff/' \
+            --exclude '/.env' \
+            --exclude '/.env.*' \
+            ./ _site/
+          test -f _site/index.html
+          test -f _site/js/app.js
+          test -f _site/css/v2.css
+
+      - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

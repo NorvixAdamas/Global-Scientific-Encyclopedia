@@ -4,7 +4,7 @@ Bách khoa toàn thư khoa học mở, song ngữ Việt–Anh: **hóa học · 
 Website tĩnh, không build, không framework, không dịch vụ trả phí; dữ liệu biên soạn đi kèm
 được kết nối với các cơ sở dữ liệu khoa học mở quốc tế truy vấn trực tiếp từ trình duyệt.
 
-- Bản đang chạy: https://papaya-eclair-e44179.netlify.app
+- Bản đang chạy: https://norvixadamas.github.io/To-n-Th-H-a-H-c-V-t-L-i-u/
 - Kiến trúc: HTML + CSS + JavaScript thuần (`window.Sci`), publish trực tiếp thư mục gốc.
 - Nguồn dữ liệu & giấy phép: [`DATA_SOURCES.md`](DATA_SOURCES.md), [`OPEN_DATA_LICENSES.md`](OPEN_DATA_LICENSES.md), [`DATABASE_COVERAGE.md`](DATABASE_COVERAGE.md).
 
@@ -92,7 +92,20 @@ tuỳ chọn (giữ khoá phía máy chủ); xem `netlify/functions/README.md`.
 > Cảnh báo: không nhập khoá trên máy tính công cộng. Khoá trong `localStorage` chỉ gửi tới API
 > chính thức (hoặc proxy do bạn cấu hình).
 
-## Triển khai Netlify
+## Triển khai GitHub Pages
+
+Workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) tự động publish
+trang lên GitHub Pages mỗi khi push vào `main` (hoặc chạy tay từ tab Actions).
+
+- Địa chỉ: https://norvixadamas.github.io/To-n-Th-H-a-H-c-V-t-L-i-u/
+- Không có bước build: workflow sao chép đúng các tệp tĩnh của trang (`index.html`, `css/`, `js/`,
+  `data/`, `legacy/`, các tệp `.md`) và bỏ qua `.git`, `.github`, `tests/`, `scripts/`, `netlify/`.
+- Trong **Settings → Pages**, mục **Source** phải là **GitHub Actions** (workflow tự bật khi repo
+  cho phép; nếu chưa bật, chọn GitHub Actions một lần là xong).
+- Trang là project site nên đường dẫn gốc có tiền tố `/To-n-Th-H-a-H-c-V-t-L-i-u/`; mọi tài nguyên
+  trong `index.html` đều dùng đường dẫn tương đối và điều hướng bằng hash (`#/...`) nên chạy đúng.
+
+## Triển khai Netlify (tuỳ chọn)
 
 `netlify.toml` đã cấu hình publish tại thư mục gốc, không build command, kèm CSP/security headers.
 Chỉ cần kéo thả hoặc nối repo; không cần biến môi trường cho bản tĩnh.
