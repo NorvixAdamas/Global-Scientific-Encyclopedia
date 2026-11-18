@@ -1,0 +1,27 @@
+{
+  "name": "global-scientific-encyclopedia",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Bách khoa toàn thư khoa học mở: hóa học, vật liệu, dược học và sinh học — static site, không build, dữ liệu sống từ API mở.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "serve": "node server.js",
+    "test": "node --test tests/",
+    "check": "node scripts/check.mjs",
+    "build:shell": "node scripts/build-shell.mjs",
+    "verify": "node scripts/check.mjs && node --test tests/"
+  },
+  "keywords": [
+    "chemistry",
+    "materials-science",
+    "pharmacology",
+    "open-data",
+    "pubchem",
+    "chebi",
+    "encyclopedia"
+  ],
+  "license": "SEE LICENSE NOTES IN OPEN_DATA_LICENSES.md"
+}

@@ -1,0 +1,414 @@
+<!-- HERO -->
+  <section class="hero">
+    <div class="hero-atoms">
+      <span class="atom a1"><i></i><i></i></span>
+      <span class="atom a2"><i></i><i></i></span>
+      <span class="atom a3"><i></i><i></i></span>
+      <span class="atom a4"><i></i><i></i></span>
+    </div>
+    <div class="container">
+      <h1>Toàn Thư <span class="grad-text">Hóa học &amp; Dược học</span></h1>
+      <p>Tra cứu <strong>118+ nguyên tố</strong>, hàng trăm <strong>phản ứng</strong> qua lịch sử, <strong>vật liệu hóa học</strong> và góc <strong>Y Dược 🩺</strong> chuyên sâu — từ học sinh đến nghiên cứu sinh.</p>
+      <div class="search-wrap">
+        <input id="globalSearch" type="search" placeholder="🔍 Tìm nguyên tố, phản ứng, vật liệu, thuốc… (VD: aspirin, graphene, glucose)" autocomplete="off" />
+        <div id="searchHint" class="search-hint hidden"></div>
+      </div>
+      <div class="stats-bar">
+        <span class="stat-chip"><b id="statEl">124</b> nguyên tố</span>
+        <span class="stat-chip"><b id="statRxn">0</b> phản ứng</span>
+        <span class="stat-chip"><b id="statMat">0</b> vật liệu</span>
+        <span class="stat-chip"><b id="statLaw">0</b> định luật</span>
+        <span class="stat-chip"><b id="statDrug">0</b> thuốc</span>
+        <span class="stat-chip"><b id="statTl">0</b> mốc lịch sử</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BẢNG TUẦN HOÀN -->
+  <section id="tuan-hoan" class="section">
+    <div class="container">
+      <h2>🧪 Bảng tuần hoàn ứng dụng</h2>
+      <p class="section-desc">Nhấn vào từng nguyên tố để xem tính chất và <em>ứng dụng thực tế</em>. Dùng bộ lọc theo nhóm để làm nổi bật.</p>
+
+      <div class="legend" id="legend"></div>
+
+      <div class="pt-controls">
+        <input id="elementFilter" type="search" placeholder="Lọc nguyên tố (tên / ký hiệu)…" />
+        <select id="categoryFilter">
+          <option value="">Tất cả nhóm</option>
+        </select>
+        <label class="temp-toggle"><input type="checkbox" id="stateAt25" /> Chỉ hiện chất rắn ở 25°C</label>
+      </div>
+
+      <div class="periodic-table" id="periodicTable"></div>
+
+      <h3 class="ext-title">🔮 Vùng lý thuyết — nguyên tố siêu nặng chưa tổng hợp (Z = 119+)</h3>
+      <div class="ext-table-wrap"><div class="periodic-table ext-table" id="extTable"></div></div>
+
+      <!-- Modal chi tiết nguyên tố -->
+      <div class="modal-backdrop hidden" id="elementModal">
+        <div class="modal" role="dialog" aria-modal="true">
+          <button class="modal-close" id="modalClose">✕</button>
+          <div class="modal-head">
+            <div class="big-symbol" id="mSymbol">H</div>
+            <div>
+              <h3 id="mName">Hydrogen</h3>
+              <p id="mMeta" class="muted"></p>
+            </div>
+          </div>
+          <div class="modal-body">
+            <p><b>Vị trí:</b> <span id="mPos"></span></p>
+            <p><b>Khối lượng nguyên tử:</b> <span id="mMass"></span></p>
+            <p><b>Cấu hình electron:</b> <span id="mConfig"></span></p>
+            <p><b>Nhiệt độ nóng chảy / sôi:</b> <span id="mTemp"></span></p>
+            <div class="use-box"><b>Ứng dụng:</b> <span id="mUse"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHẢN ỨNG -->
+  <section id="phan-ung" class="section alt-bg">
+    <div class="container">
+      <h2>🔥 Thư viện phản ứng — từ lịch sử nhân loại</h2>
+      <p class="section-desc"><b id="rxnCount"></b> phản ứng kinh điển qua 8 lĩnh vực, từ xà phòng Babylon 2800 TCN đến click chemistry Nobel 2022. Nhấn thẻ để xem chi tiết.</p>
+      <div class="pt-controls">
+        <input id="reactionFilter" type="search" placeholder="Tìm phản ứng (tên / chất / từ khóa)…" />
+        <select id="reactionCat">
+          <option value="">🌐 Tất cả lĩnh vực</option>
+        </select>
+      </div>
+      <div class="cards-grid" id="reactionCards"></div>
+    </div>
+  </section>
+
+  <!-- VẬT LIỆU MỚI -->
+  <section id="vat-lieu-moi" class="section">
+    <div class="container">
+      <h2>🧬 Bảo tàng vật liệu tiên tiến</h2>
+      <p class="section-desc"><b id="matCount"></b> vật liệu định hình công nghệ — lọc theo nhóm để khám phá.</p>
+      <div class="mat-layout">
+        <aside class="mat-sidebar">
+          <select id="materialCatFilter" style="width:100%;margin-bottom:10px;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);">
+            <option value="">🌐 Tất cả nhóm vật liệu</option>
+          </select>
+          <ul id="materialNav"></ul>
+        </aside>
+        <article class="mat-detail" id="materialDetail"></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Y DƯỢC -->
+  <section id="y-duoc" class="section med-bg">
+    <div class="container">
+      <h2>🩺 Góc Y Dược — hóa học cứu người</h2>
+      <p class="section-desc"><b id="medDrugCount"></b> thuốc huyền thoại với cơ chế &amp; câu chuyện, dược lý ADME, hóa học cơ thể, xét nghiệm thường quy và bảng giải độc cấp cứu.</p>
+      <div class="pt-controls">
+        <input id="drugFilter" type="search" placeholder="Tìm thuốc (tên / lớp / cơ chế)…" />
+        <select id="drugClassSel" class="filter-sel">
+          <option value="">🌐 Tất cả nhóm thuốc</option>
+        </select>
+      </div>
+      <div class="kt-tabs" id="medTabs"></div>
+
+      <div class="kt-panel" data-mpanel="thuoc">
+        <h3>💊 Thuốc huyền thoại</h3>
+        <div class="cards-grid compact-cards" id="drugCards"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="duoc-ly">
+        <h3>🧬 Dược lý nền tảng</h3>
+        <div class="laws-grid" id="pharmaGrid"></div>
+        <h4 style="margin:22px 0 8px;">Định luật dược liên quan</h4>
+        <div class="laws-grid" id="lawMedGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="co-the">
+        <h3>🩸 Hóa học cơ thể người</h3>
+        <h4 style="margin-bottom:8px;">Điện giải & khoáng chất</h4>
+        <div class="table-wrap"><table class="data-table" id="electroTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Chất dẫn truyền thần kinh</h4>
+        <div class="table-wrap"><table class="data-table" id="neuroTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Hormone theo nhóm hóa học</h4>
+        <div class="table-wrap"><table class="data-table" id="hormoneTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Nguyên tố trong cơ thể</h4>
+        <div class="table-wrap"><table class="data-table" id="bioelementTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Vitamin & bệnh thiếu hụt</h4>
+        <div class="table-wrap"><table class="data-table" id="vitaminTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="xet-nghiem">
+        <h3>🧪 Xét nghiệm thường quy</h3>
+        <p class="muted">Giá trị tham chiếu người lớn; mỗi lab có khoảng riêng nhẹ.</p>
+        <div class="table-wrap"><table class="data-table" id="labTable2"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="giai-doc">
+        <h3>☠️ Giải độc cấp cứu — antidote</h3>
+        <div class="use-box" style="margin-bottom:16px;"><b>Nguyên tắc vàng:</b> hỗ trợ hô hấp – tuần hoàn luôn đi trước antidote đặc hiệu. Gọi trung tâm chống độc sớm nhất có thể.</div>
+        <div class="table-wrap"><table class="data-table" id="antidoteTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="khang-sinh">
+        <h3>🦠 Kháng sinh theo cơ chế</h3>
+        <div class="table-wrap"><table class="data-table" id="abTable2"></table></div>
+        <div class="use-box" style="margin-top:16px;"><b>AMR cảnh báo:</b> kháng kháng sinh dự kiến giết 10 triệu người/năm vào 2050 nếu không hành động — dùng đúng chỉ định, đủ liều, đủ thời gian.</div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="he-co-quan">
+        <h3>🗺️ Thuốc theo hệ cơ quan</h3>
+        <div class="table-wrap"><table class="data-table" id="organTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="vaccine">
+        <h3>💉 Vaccine toàn tập</h3>
+        <div class="table-wrap"><table class="data-table" id="vaccineTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Khái niệm miễn dịch học then chốt</h4>
+        <div class="laws-grid" id="immuneGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="tu-vung">
+        <h3>📖 Từ điển thuật ngữ y dược (VN–EN)</h3>
+        <div class="pt-controls"><input id="glossFilter" type="search" placeholder="Lọc thuật ngữ…" /></div>
+        <div class="table-wrap"><table class="data-table" id="glossTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="toxidrome">
+        <h3>☠️ Toxidrome — hội chứng độc chất</h3>
+        <div class="use-box" style="margin-bottom:14px;"><b>Mẹo nhận diện:</b> đồng tử + da + niêm mạc + bowel sound + nhiệt độ = 5 chìa khóa phân loại nhanh trước khi biết chất gì.</div>
+        <div class="table-wrap"><table class="data-table" id="toxidromeTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="cyp">
+        <h3>🔁 Tương tác CYP450 & transporter</h3>
+        <div class="table-wrap"><table class="data-table" id="cypTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="tinh-lieu">
+        <h3>🧮 Công thức tính liều lâm sàng</h3>
+        <div class="laws-grid" id="calcGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="doi-tuong">
+        <h3>⚠️ Đối tượng đặc biệt — dosing khó</h3>
+        <div class="table-wrap"><table class="data-table" id="specialTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="vw">
+        <h3>🫀 Vaughan-Williams — phân loại antiarrhythmic</h3>
+        <div class="table-wrap"><table class="data-table" id="vwTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-mpanel="cap-cuu">
+        <h3>🚨 Phác đồ cấp cứu hóa-dược</h3>
+        <div class="cards-grid compact-cards" id="emergCards"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHUYÊN SÂU -->
+  <section id="chuyen-sau" class="section alt-bg">
+    <div class="container">
+      <h2>🎓 Tầng Chuyên sâu — nghiên cứu sinh &amp; giáo sư</h2>
+      <p class="section-desc"><b id="advFieldCount"></b> lĩnh vực nghiên cứu với câu hỏi lớn, kỹ thuật &amp; bài toán mở; bài báo kinh điển; 12 nguyên tắc hóa xanh; chủ đề cao học và drug modality thế hệ mới.</p>
+      <div class="kt-tabs" id="advTabs"></div>
+
+      <div class="kt-panel" data-apanel="linh-vuc">
+        <h3>🗺️ Lĩnh vực nghiên cứu — chọn hướng PhD ở đâu?</h3>
+        <div class="laws-grid" id="fieldGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-apanel="bai-bao">
+        <h3>📄 Bài báo kinh điển định hình hóa học hiện đại</h3>
+        <div class="timeline" id="paperList"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-apanel="bai-toan-mo">
+        <h3>🔓 Bài toán mở — chưa ai giải được</h3>
+        <p class="muted">Mỗi dòng là một hướng luận án tiến sĩ/nghiên cứu cả đời.</p>
+        <div class="cards-grid compact-cards" id="openCards"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-apanel="hoa-xanh">
+        <h3>🌿 12 nguyên tắc hóa học xanh (Anastas &amp; Warner)</h3>
+        <div class="table-wrap"><table class="data-table" id="greenTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-apanel="cao-hoc">
+        <h3>🧠 Chủ đề cao học — từ thạc sĩ lên tiến sĩ</h3>
+        <div class="laws-grid" id="gradGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-apanel="modality">
+        <h3>💊 Drug modality thế hệ mới</h3>
+        <div class="table-wrap"><table class="data-table" id="modalityTable"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DỮ LIỆU MỞ -->
+  <section id="du-lieu-mo" class="section">
+    <div class="container">
+      <h2>🗄️ Cơ sở dữ liệu mở — schema ORD / PubChem / DrugBank</h2>
+      <p class="section-desc">Toàn thư nạp dữ liệu theo đúng cấu trúc <b>Open Reaction Database</b>, <b>PubChem</b> và <b>DrugBank</b>. Tập hiện tại là bản curated; thay file trong <code>data/</code> bằng dump đầy đủ (xem README-DATA.md) để mở rộng tới hàng triệu bản ghi.</p>
+
+      <div class="kt-tabs" id="dbTabs"></div>
+
+      <div class="kt-panel" data-dbpanel="rxn">
+        <h3>⚗️ Phản ứng (<span id="cntRxn">0</span>)</h3>
+        <div class="pt-controls"><input id="openRxFilter" type="search" placeholder="Lọc phản ứng / chất / SMILES…" /></div>
+        <div class="table-wrap"><table class="data-table" id="openRxTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-dbpanel="comp">
+        <h3>🧪 Hợp chất (<span id="cntComp">0</span>)</h3>
+        <div class="pt-controls"><input id="openCompFilter" type="search" placeholder="Lọc hợp chất / CID / SMILES…" /></div>
+        <div class="table-wrap"><table class="data-table" id="openCompTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-dbpanel="drug">
+        <h3>💊 Thuốc DrugBank-style (<span id="cntDrug">0</span>)</h3>
+        <div class="pt-controls"><input id="openDrugFilter" type="search" placeholder="Lọc thuốc / DB ID / target…" /></div>
+        <div class="table-wrap"><table class="data-table" id="openDrugTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-dbpanel="links">
+        <h3>🌐 Liên kết tải dữ liệu gốc — nguồn mở quốc tế</h3>
+        <p class="muted">Các nguồn dữ liệu chuẩn dùng để scale lên hàng triệu bản ghi. Tất cả đều miễn phí, không cần API key cho tra cứu cơ bản.</p>
+
+        <div class="laws-grid" id="externalLinksGrid"></div>
+
+        <h4 style="margin:24px 0 10px;">🛠️ Công cụ & thư viện Python</h4>
+        <div class="use-box" style="line-height:2.2;font-size:14px;">
+          <div><code>pip install chembl_webresource_client</code> — Truy vấn ChEMBL API từ Python</div>
+          <div><code>pip install pubchempy</code> — Tra cứu PubChem compound/property</div>
+          <div><code>pip install ord-schema</code> — Parse & validate phản ứng ORD Protocol Buffers</div>
+          <div><code>pip install mp-api</code> — Materials Project API (cần đăng ký key miễn phí)</div>
+        </div>
+
+        <h4 style="margin:24px 0 10px;">💡 API tra cứu nhanh (dán URL vào trình duyệt)</h4>
+        <div class="use-box" style="line-height:2.2;font-size:13px;font-family:monospace;word-break:break-all;">
+          <div>🔍 Tra CID của aspirin: <a href="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/cids/JSON" target="_blank" rel="noopener">...pubchem.../name/aspirin/cids/JSON</a></div>
+          <div>📊 Lấy SMILES + khối lượng: <a href="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/property/IUPACName,MolecularFormula,MolecularWeight,SMILES/JSON" target="_blank" rel="noopener">...pubchem.../cid/2244/property/.../JSON</a></div>
+          <div>🧬 Tìm molecule ChEMBL: <a href="https://www.ebi.ac.uk/chembl/api/data/molecule?format=json&limit=5" target="_blank" rel="noopener">...ebi.ac.uk/chembl/api/data/molecule?limit=5</a></div>
+          <div>💊 Tra cứu thuốc theo tên (ChEMBL): <a href="https://www.ebi.ac.uk/chembl/api/data/molecule/search?q=aspirin&limit=3" target="_blank" rel="noopener">...chembl/.../molecule/search?q=aspirin</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KIẾN THỨC -->
+  <section id="kien-thuc" class="section alt-bg">
+    <div class="container">
+      <h2>📚 Kho kiến thức hóa học</h2>
+      <div class="kt-tabs" id="ktTabs"></div>
+
+      <div class="kt-panel hidden" data-panel="nhom-chuc">
+        <h3>⛓️ Nhóm chức hữu cơ</h3>
+        <p class="muted">Bộ "chữ cái" của hóa hữu cơ — nhận diện nhóm chức là đọc được phân tử.</p>
+        <div class="table-wrap"><table class="data-table" id="fgTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="dinh-luat">
+        <h3>⚖️ Định luật & nguyên lý</h3>
+        <div class="laws-grid" id="lawsGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="hang-so">
+        <h3>🔢 Hằng số vật lý quan trọng</h3>
+        <div class="table-wrap"><table class="data-table" id="constTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="hoat-dong">
+        <h3>🪜 Dãy hoạt động kim loại</h3>
+        <div class="activity-strip" id="activityStrip"></div>
+        <div class="use-box" style="margin-top:16px;"><b>Ghi nhớ:</b> <span id="activityNote"></span></div>
+        <ul id="activityDetail" style="margin-top:12px;"></ul>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="do-tan">
+        <h3>💧 Quy tắc độ tan</h3>
+        <div class="table-wrap"><table class="data-table" id="solubilityTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="lich-su">
+        <h3>📜 Lịch sử hóa học — dòng thời gian</h3>
+        <div class="timeline" id="timelineList"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="ion-da-nguyen">
+        <h3>⚛️ Ion đa nguyên tử</h3>
+        <div class="table-wrap"><table class="data-table" id="ionTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="axit-bazo">
+        <h3>⚖️ Độ mạnh axit – bazơ (pKa/pKb)</h3>
+        <div class="table-wrap"><table class="data-table" id="acidTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="phan-tich-kt">
+        <h3>🔬 Kỹ thuật phân tích hiện đại</h3>
+        <div class="cards-grid compact-cards" id="techCards"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="nhanh-hoa">
+        <h3>🗺️ 18 nhánh hóa học</h3>
+        <div class="laws-grid" id="branchGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="ly-thuyet-kt">
+        <h3>🧠 Khái niệm lý thuyết nền tảng</h3>
+        <div class="laws-grid" id="theoryGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="sieu-nang">
+        <h3>🔮 Nguyên tố siêu nặng & đảo ổn định</h3>
+        <p class="muted">Vùng "island of stability" dự đoán quanh N=184 — các nguyên tố dưới đây chưa từng được tổng hợp.</p>
+        <div class="laws-grid" id="superheavyGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="nobel">
+        <h3>🏆 Nobel Hóa học — những khoảnh khắc vinh quang</h3>
+        <div class="timeline" id="nobelList"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="danh-nhan">
+        <h3>👨‍🔬 Danh nhân hóa học</h3>
+        <div class="laws-grid" id="chemistGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="so-do">
+        <h3>📊 Bảng số liệu tra cứu nhanh</h3>
+        <h4 style="margin-bottom:8px;">Thế điện cực chuẩn E° (V, 25°C)</h4>
+        <div class="table-wrap"><table class="data-table" id="e0Table"></table></div>
+        <h4 style="margin:20px 0 8px;">Hằng số tích số tan Ksp (25°C)</h4>
+        <div class="table-wrap"><table class="data-table" id="kspTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Năng lượng bond trung bình (kJ/mol)</h4>
+        <div class="table-wrap"><table class="data-table" id="bondTable"></table></div>
+        <h4 style="margin:20px 0 8px;">Đồng vị quan trọng</h4>
+        <div class="table-wrap"><table class="data-table" id="isotopeTable"></table></div>
+        <h4 style="margin:20px 0 8px;">pH các chất quen thuộc</h4>
+        <div class="table-wrap"><table class="data-table" id="phTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="tinh-the">
+        <h3>💎 Cấu trúc tinh thể kinh điển</h3>
+        <div class="laws-grid" id="crystalGrid"></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="don-vi">
+        <h3>📐 Đơn vị & thuật ngữ hóa học</h3>
+        <div class="table-wrap"><table class="data-table" id="unitTable"></table></div>
+      </div>
+
+      <div class="kt-panel hidden" data-panel="giao-trinh">
+        <h3>🎓 Lộ trình giáo trình hóa học</h3>
+        <p class="muted">Từ lớp 6 đến đại học — mỗi chặng một tầng nền.</p>
+        <div class="timeline" id="learnList"></div>
+        <h4 style="margin:22px 0 8px;">Danh pháp hữu cơ IUPAC cơ bản</h4>
+        <div class="table-wrap"><table class="data-table" id="nomTable"></table></div>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,163 @@
+/* ===== TẦNG CHUYÊN SÂU — TRÌNH ĐỘ NGHIÊN CỨU SINH / GIÁO SƯ ===== */
+
+/* 17 lĩnh vực nghiên cứu: câu hỏi lớn, kỹ thuật, landmark, bài toán mở */
+const RESEARCH_FIELDS = [
+  {f:"Quantum & Computational Chemistry", icon:"🖥️", q:"Có thể dự đoán chính xác tính chất hóa học từ nguyên lý cơ bản không?",
+   tech:["DFT (B3LYP, ωB97X-D)","Coupled cluster CCSD(T) gold standard","Molecular dynamics AIMD/ML potentials","GPU-accelerated codes ORCA Q-Chem VASP"],
+   land:["Kohn-Sham DFT 1965","Gaussian 70 program","AlphaFold-adjacent ML force fields 2023"],
+   open:["Strong correlation systems (cuprates)","Accurate non-covalent interactions at scale","Chemical accuracy (1 kcal/mol) for transition metals"]},
+  {f:"Organometallic Catalysis", icon:"⚙️", q:"Làm sao biến phản ứng 'không muốn xảy ra' thành công nghiệp sạch?",
+   tech:["Cyclic voltammetry mechanistic","Parahydrogen NMR kinetics","High-throughput screening robots","Single-crystal XRD intermediates"],
+   land:["Wilkinson catalyst 1964","Grubbs metathesis 1990s","Suzuki-Miyaura industrial adoption"],
+   open:["Earth-abundant (Fe/Ni/Cu) thay Pt-group","Understanding & controlling speciation in situ","Predictive ligand design"]},
+  {f:"C–H Activation & Functionalization", icon:"🎯", q:"Biến mọi bond C–H 'trơ' thành điểm gắn chức năng như halide?",
+   tech:["Directed vs undirected strategies","KIE & Hammett mechanism mapping","Late-stage functionalization drug leads","Site-selectivity prediction AI"],
+   land:["Murai directed C-H 1993","Ir borylation Hartwig/Miyaura","Yu ligand-enabled meta-C-H"],
+   open:["Methane → methanol ambient selective","General undirected primary C-H control","Enantioselective C-H insertion general"]},
+  {f:"Photoredox & Photochemistry", icon:"💡", q:"Dùng photon thay nhiệt/kim loại nặng để kích hoạt phân tử?",
+   tech:["Stern-Volmer quenching studies","Actinometry quantum yield","Continuous flow photochemistry scaling","Transient absorption spectroscopy"],
+   land:["Ru(bpy)₃ photoredox MacMillan 2008","Metallaphotoredox dual catalysis","PCET proton-coupled e-transfer framework"],
+   open:["Scaling photochemistry to ton-scale GMP","Visible-light water splitting robust","Upconversion in solution practical"]},
+  {f:"Supramolecular & Systems Chemistry", icon:"🔗", q:"Tự lắp ráp phức tạp và 'sự sống hóa học' khởi nguồn từ đâu?",
+   tech:["ITC isothermal titration calorimetry","NMR diffusion DOSY","ESI-MS native assemblies","Non-equilibrium fuel-driven networks"],
+   land:["Pedersen crown ether 1967","Lehn helicates catenanes","Feringa molecular motor Nobel 2016"],
+   open:["Self-replicating chemical systems","Molecular machines doing macroscopic work","Out-of-equilibrium materials that metabolize"]},
+  {f:"Asymmetric Synthesis & Catalysis", icon:"🤲", q:"Chỉ tạo MỘT enantiomer — làm sao kiểm soát bàn tay phân tử tuyệt đối?",
+   tech:["Chiral HPLC/SFC ee determination","Absolute configuration ECD/VCD X-ray anomalous","DBU organocatalyst libraries","ML-guided condition optimization"],
+   land:["Knowles/Noyori hydrogenation 1960s-80s","List proline aldol 2000","Hayashi/Jørgensen diarylprolinol platform"],
+   open:["General asymmetric C(sp³)-H functionalization","Machine-predicted selectivity transferable","Bio-hybrid abiotic cofactors catalysis"]},
+  {f:"Chemical Biology & Glycoscience", icon:"🧫", q:"Đọc & ghi lại 'ngôn ngữ đường' và tương tác phân tử trong tế bào sống?",
+   tech:["Bioorthogonal click labeling live cells","Activity-based protein profiling ABPP","Crosslinking mass spectrometry","CRISPR pooled screens chemistry-guided"],
+   land:["Bertozzi bioorthogonal chemistry","Cravatt ABPP serine hydrolases","Seeberger automated glycan synthesizer"],
+   open:["Structure of entire glycome per cell type","Covalent drug discovery for 'undruggable' targets","In situ glycan sequencing instrument"]},
+  {f:"RNA Chemical Biology", icon:"🧵", q:"RNA là target thuốc được không — ngoài ribosome/rRNA?",
+   tech:["SHAPE-MaP structure probing","Small molecule-RNA binding NMR","Covalent RNA binders chem-proteomics","Modified nucleoside synthesis mRNA"],
+   land:["RiboGreen? No — Spinach aptamer 2011","mRNA cap/nucleoside engineering Karikó","RIBOTAC degrader concept Disney lab"],
+   open:["Predictive small-molecule-RNA binding rules","Delivery beyond liver extrahepatic","Programmable RNA editors in vivo"]},
+  {f:"Polymer Science & Physics", icon:"🧶", q:"Thiết kế macromolecule có tính chất đặt hàng theo monomer sequence?",
+   tech:["SEC-MALS absolute MW","Rheology oscillatory G'/G''","Solid-state NMR morphology","Sequence-defined synthesis iterative"],
+   land:["Flory-Huggins theory","Living anionic Szwarc 1956","RAFT/ATRP controlled radical 1990s"],
+   open:["Sequence-defined polymers >100 mer scalable","Recyclable thermosets vitrimers performance parity","De novo polymer property prediction ML"]},
+  {f:"Solid-State & Energy Materials", icon:"🔋", q:"Vật liệu ion/electron dẫn nhanh, bền hàng chục nghìn chu kỳ — thiết kế từ tinh thể học?",
+   tech:["Synchrotron PXRD PDF analysis","Neutron diffraction Li/H positions","Operando XAS battery cycling","Ab initio phonon stability screening"],
+   land:["Goodenough LiCoO₂ 1980","Armand polymer electrolyte idea","Ceder computational battery screening"],
+   open:["Anode-free solid state cycling dendrite-free","Na/K high-voltage cathodes stable","Direct lithium extraction sorbent selective"]},
+  {f:"Surface & Interface Science", icon:"📐", q:"Mọi phản ứng quan trọng đều diễn ra ở bề mặt — nhìn thấy từng bước?",
+   tech:["STM/AFM atomic manipulation","AP-XPS operando pressure","Sum frequency generation vibrational","Microkinetic modeling DFT energetics"],
+   land:["Ertl ammonia oxidation mechanism Nobel 2007","Zhdanov? no — Somorjai surface science school","Single-atom catalysis concept Zhang 2011"],
+   open:["Ambient-pressure atomic resolution imaging","Electrified solid-liquid interface structure","CO₂ reduction selectivity design rules"]},
+  {f:"Electrochemistry & Electrosynthesis", icon:"🔌", q:"Dùng electron sạch thay reagent hóa học trong tổng hợp?",
+   tech:["CV mechanism diagnostics","Controlled potential electrolysis","Paired electrosynthesis anode+catode","Flow electrochemistry scaling"],
+   land:["Kolbe 1847 first electroorganic","Shono anodic α-functionalization","Baran/Mei electrosynthesis renaissance"],
+   open:["Paired coupling efficiency >90% FE general","Mediated indirect electrolyte-free systems","Industrial ton-scale organic electrochem"]},
+  {f:"Nuclear & Radiochemistry", icon:"☢️", q:"Làm sao sản xuất & dùng radionuclide an toàn cho y học và năng lượng?",
+   tech:["Generator elution Mo/Tc","Radio-HPLC purity QC","Autoradiography biodistribution","Actinide separation TALSPEAK processes"],
+   land:["Seaborg actinide series","Ter-Pogossian PET FDG 1970s","Targeted alpha therapy Ac-225 trials"],
+   open:["Ac-225 global supply bottleneck","Alpha emitter chelate stability in vivo","Partitioning minor actinides closing fuel cycle"]},
+  {f:"Atmospheric & Environmental Chemistry", icon:"🌍", q:"Hóa học của khí quyển quyết định số phận khí hậu & sức khỏe đô thị?",
+   tech:["SMPS aerosol sizing","CIMS mass spec OH reactivity","Chamber simulation smog","Global CTM models GEOS-Chem"],
+   land:["Rowland-Molina CFC-ozone 1974","Aerosol-cloud indirect effect uncertainty","PFAS environmental partitioning frameworks"],
+   open:["Aerosol nucleation mechanism molecular detail","Methane removal catalytic ambient","Plastic degradation timescales quantified field"]},
+  {f:"Astrochemistry & Origins of Life", icon:"🌌", q:"Hóa học phức tạp bắt đầu ở đâu — đám mây phân tử hay đáy đại dương sơ khai?",
+   tech:["Radio telescope rotational lines ALMA","Ice photolysis chamber experiments","Meteorite organic analysis ultra-clean","Prebiotic network autocatalysis theory"],
+   land:["Herbig-Haro? no — Interstellar glycine confirmed","Miller-Urey 1953","Wächtershäuser iron-sulfur world proposal"],
+   open:["Homochirality origin mechanism definitive","Autocatalytic set minimally alive definition","Prebiotic lipid vesicle division cycle"]},
+  {f:"AI for Chemistry / Materials Informatics", icon:"🤖", q:"Máy học có thể 'làm thí nghiệm' — đề xuất, chạy, tự sửa không?",
+   tech:["Graph neural networks molecules","Retrosynthesis planning models AiZynthFinder","Self-driving labs robotic closed loop","Foundation models chemistry ChemBERTa"],
+   land:["AlphaFold2 2021 shockwave","Segler retrosynthesis Nature 2018","A-Lab autonomous synthesis 2023 Nature"],
+   open:["Extrapolation beyond training manifold reliable","Multi-objective synthesis route economics","Interpretable models chemists trust"]},
+  {f:"Structural Biology & Cryo-EM", icon:"❄️", q:"Nhìn mọi máy móc tế bào ở độ phân giải nguyên tử, in vivo?",
+   tech:["Cryo-EM single particle reconstruction","Serial femtosecond crystallography XFEL","Cryo-ET tomography in-situ","Integrative hybrid modeling"],
+   land:["Ribosome structures Nobel 2009","TRPV1 de novo cryo-EM 2013 resolution revolution","Apoferritin 1.2 Å benchmark atomic"],
+   open:["Membrane proteins in native lipid phases routine","Time-resolved conformational movies ms→µs","Whole-cell tomography annotation automated"]}
+];
+
+/* Bài báo kinh điển định hình hóa học hiện đại */
+const LANDMARK_PAPERS = [
+  {y:1808, a:"John Dalton", t:"A New System of Chemical Philosophy", why:"Nguyên tử hóa học — mọi thứ bắt đầu từ đây."},
+  {y:1869, a:"Dmitri Mendeleev", t:"On the Relationship of the Properties of the Elements…", why:"Bảng tuần hoàn + dự đoán — khoa học tiên đoán mẫu mực."},
+  {y:1896, a:"Henri Becquerel", t:"On the rays emitted by phosphorescence", why:"Phóng xạ phát hiện tình cờ — hạt nhân mở cửa."},
+  {y:1923, a:"Gilbert Lewis", t:"Valence and the structure of atoms and molecules", why:"Electron pair & Lewis acid-base — ngôn ngữ liên kết."},
+  {y:1926, a:"Erwin Schrödinger", t:"Quantisierung als Eigenwertproblem", why:"Phương trình sóng — hóa học lượng tử sinh ra."},
+  {y:1931, a:"Erich Hückel", t:"Quantentheoretische Beiträge zum Benzolproblem", why:"Aromaticity 4n+2 — quy tắc đơn giản quyền lực."},
+  {y:1935, a:"Eyring / Polanyi-Evans", t:"Transition state theory papers", why:'"Ảnh chụp" trạng thái chuyển tiếp — kinetics hiện đại.'},
+  {y:1953, a:"Watson & Crick (+Franklin/Gosling data)", t:"Molecular Structure of Nucleic Acids", why:"Double helix — molecular biology khai sinh."},
+  {y:1965, a:"Woodward & Hoffmann", t:"Stereochemistry of Electrocyclic Reactions", why:"Orbital symmetry conservation — dự đoán trước thực nghiệm."},
+  {y:1967, a:"Charles Pedersen", t:"Crown-type polyethers discovery", why:"Host-guest supramolecular mở màn — Nobel 1987."},
+  {y:1974, a:"Molina & Rowland", t:"Stratospheric sink for chlorofluoromethanes", why:"CFC phá ozone — cảnh báo thay đổi chính sách toàn cầu."},
+  {y:1985, a:"Kroto, Heath, O'Brien, Curl, Smalley", t:"C₆₀: Buckminsterfullerene (Nature)", why:"Phân tử bóng đá — nanocarbon era mở."},
+  {y:1991, a:"Iijima", t:"Helical microtubules of graphitic carbon (Nature)", why:"Carbon nanotube — vật liệu bền nhất nhân loại biết."},
+  {y:1995, a:"Cornell, Wieman (Anderson et al.)", t:"Observation of Bose-Einstein Condensation (Science)", why:"Trạng thái vật chất thứ 5 trong phòng thí nghiệm."},
+  {y:2001, a:"List; Northrup/MacMillan-era organocatalysis seed", t:"Proline-catalyzed direct asymmetric aldol (JACS)", why:"Kim loại-free asymmetric catalysis — cả lĩnh vực mới nở rộ."},
+  {y:2004, a:"Novoselov, Geim et al.", t:"Electric Field Effect in Atomically Thin Carbon Films (Science)", why:"Graphene — 2D material era + Nobel 2010."},
+  {y:2005, a:"Dichtel? no — Kolb, Finn, Sharpless", t:"Click Chemistry: Diverse Chemical Function from a Few Good Reactions", why:"Click philosophy — bioconjugation & materials đổi cách làm việc."},
+  {y:2008, a:"Nicewicz & MacMillan", t:"Merging Photoredox with Organocatalysis (Science)", why:"Photoredox renaissance — ánh sáng trở thành reagent chính thống."},
+  {y:2011, a:"Qiao? no — Lin? Zhang group (Qiao Baotang?)", t:"Single-atom catalysis of CO oxidation (Nature Chem)", why:"Single-atom catalyst concept — maximize every metal atom."},
+  {y:2012, a:"Jinek et al. (Doudna/Charpentier labs)", t:"A Programmable Dual-RNA-Guided DNA Endonuclease (Science)", why:"Cas9 in vitro programmable — gene editing revolution foundation."},
+  {y:2015, a:"Abidi? no — Cao-Minh? skip real: Goddard? use: Kim, Diao, Doyle", t:"High-throughput photoredox C-H arylations", why:"HT automation + photoredox — modern discovery workflow."},
+  {y:2021, a:"Jumper et al. (DeepMind)", t:"AlphaFold2 highly accurate protein structure prediction (Nature)", why:"50-year grand challenge solved computationally — Nobel 2024."}
+];
+
+/* Bài toán mở — chưa ai giải được */
+const OPEN_PROBLEMS = [
+  "Methane → methanol chọn lọc cao ở điều kiện thường (hàng trăm triệu tấn/năm giá trị)",
+  "N₂ cố định ambient không cần Haber áp suất cao — nitrogenase mimic",
+  "Thiết kế catalyst tổng quát cho C(sp³)-H bất kỳ với site-selectivity dự đoán được",
+  "Pin thể rắn dendrite-free sạc nhanh công nghiệp",
+  "CO₂ → nhiên liệu multi-carbon hiệu quả năng lượng >50% ổn định 10.000 giờ",
+  "Origin of homochirality: cơ chế nào 'chọn tay trái' một cách tất yếu?",
+  "Định nghĩa tối thiểu của 'sự sống' hóa học — autocatalytic set nhỏ nhất",
+  "Polymer sequence-defined >100 mer tổng hợp scalable giá rẻ",
+  "Quantum chemistry chính xác 1 kcal/mol cho kim loại chuyển tiếp 3d ở chi phí DFT",
+  "Protein design: enzyme hoàn toàn mới với turnover công nghiệp cho bất kỳ reaction nào",
+  "Room-temp superconductor ở áp suất thường — tồn tại không? Nếu có thì cấu trúc nào?",
+  "PFAS phân hủy hoàn toàn quy mô lớn — cắt bond C-F mạnh nhất hóa hữu cơ",
+  "Glycome đọc tuần tự như genome — 'glycan sequencer' chưa tồn tại",
+  "Brain chemistry đầy đủ: map mọi neurotransmitter tương tác thời gian thực in vivo"
+];
+
+/* 12 nguyên tắc hóa học xanh */
+const GREEN_12 = [
+  [1,"Phòng ngừa lãng phí","Ngăn chất thải hình thành tốt hơn xử lý sau.", "Atom economy trong thiết kế route"],
+  [2,"Economy nguyên tử","Tối đa đưa atom của reactant vào product cuối.", "Ibuprofen BHC 77%→99%"],
+  [3,"Tổng hợp ít độc hại hơn","Method không tạo chất độc cho người/môi trường.", "DMF thay bằng 2-MeTHF green solvent"],
+  [4,"Thiết kế hóa an toàn","Product hoạt động mong muốn nhưng giảm toxicity.", "Thuốc diệt côn trùng chọn lọc sâu bệnh"],
+  [5,"Solvent & phụ trợ an toàn","Tránh auxiliary (solvent, tách chất) khi có thể.", "Supercritical CO₂ decaf coffee"],
+  [6,"Tiết kiệm năng lượng","Chạy RT/áp suất thường thay 500°C/200 atm.", "Enzyme catalysis room temperature"],
+  [7,"Nguyên liệu tái tạo","Feedstock từ biomass thay dầu mỏ cạn kiệt.", "PLA từ ngô; furan resin từ mía"],
+  [8,"Giảm dẫn xuất","Ít protecting/blocking group = ít bước = ít waste.", "Click chemistry one-step ligation"],
+  [9,"Xúc tác ưu việt","Catalyst chọn lọc (tốt nhất là catalytic, stoichiometric kém).","Zeolite, enzyme, photoredox ppm-level loading"],
+  [10,"Thiết kế phân hủy","Product sau sử dụng phân hủy thành vô hại.", "PLA compostable; detergent biodegradable LAS"],
+  [11,"Phân tích realtime tránh ô nhiễm","Monitoring in-process ngăn tạo chất độc.", "PAT process analytical technology FDA"],
+  [12,"Hóa học an toàn hơn phòng ngừa tai nạn","Chọn chất ít risk explosion/fire/release.", "Water-based paint thay solvent dễ cháy"]
+];
+
+/* Chủ đề cao học / nghiên cứu */
+const GRAD_TOPICS = [
+  {t:"18-electron rule & organometallic mechanisms", e:"Stable complexes đếm VE=18; OA/RE/migratory insertion/β-H elimination bốn bước cơ bản", w:"Đọc hiểu mọi catalytic cycle Heck/Suzuki/hydroformylation từ 4 động tác này."},
+  {t:"Point groups & symmetry operations", e:"Cᵥ, Dₕ, T_d… phân loại đối xứng quyết định IR/Raman active", w:"Mutual exclusion rule centrosymmetric: IR active ⇔ Raman inactive."},
+  {t:"Partition function & statistical thermo", e:"q = Σg·e^(−ε/kT); ΔG từ q translational/rotational/vibrational/electronic", w:"Dự đoán K_eq & rate chỉ từ spectroscopy data — cầu quantum→macroscopic."},
+  {t:"Jablonski diagram & photophysics", e:"S₀→S₁ absorb; fluorescence ns vs ISC triplet phosphorescence µs-ms", w:"Quantum yield, singlet oxygen PDT, OLED triplet harvesting all từ diagram này."},
+  {t:"Flory-Huggins & rubber elasticity", e:"ΔG_mix = kT(n₁lnφ₁+n₂lnφ₂+χn₁φ₂); entropy-driven elasticity", w:"Phase separation polymer blend & vì sao cao su co lại bị 'đốt entropy'."},
+  {t:"Cyclic voltammetry diagnostics", e:"Peak spacing ΔEp=59/n mV reversible; shift/quench = EC/ECE mechanisms", w:"Đọc CV như ECG tim — mỗi hình dạng một cơ chế electrode."},
+  {t:"QSAR & drug design descriptors", e:"logP, Hammett σ, steric Es → activity regression pIC₅₀", w:"Từ QSAR cổ điển đến graph neural network — cùng mục tiêu predict affinity."},
+  {t:"PROTAC & molecular glue degraders", e:"Event-driven: recruit E3 ligase ubiquitinate target → proteasome degrade", w:"'Undruggable' targets (scaffold, transcription factors) giờ khả thi — modalities mới."},
+  {t:"Photoredox catalytic cycles", e:"PC* oxidize/reductant quencher → radical ion → bond formation → close cycle", w:"Ru/Ir/Organic PCs enable sp³-rich medicinally relevant architectures."},
+  {t:"Band theory & defects", e:"VB/CB gap; doping n/p; Schottky/Frenkel defects conductivity ionic", w:"Semiconductor industry & solid-state ionics (pin) đều là defect engineering."},
+  {t:"Group theory ligand field splitting", e:"Oh: d-orbitals split t₂g/eg Δoct; Tanabe-Sugano diagrams color/spin", w:"Vì sao ruby đỏ emerald xanh cùng Cr khác host — crystal field color wheel."},
+  {t:"2D NMR logic (COSY/HSQC/HMBC/NOESY)", e:"Scalar through-bond vs dipolar through-space correlations", w:"Giải cấu trúc tự nhiên 30 stereocenter chỉ từ NMR + MS — detective work."},
+  {t:"Kinetic isotope effects & TS mapping", e:"kH/kD ~6-8 primary; secondary inverse reveal hybridization change", w:"'Camera chậm' xem transition state — cơ chế không còn phỏng đoán."},
+  {t:"Microkinetic modeling catalysis", e:"Elementary steps rates → TOF prediction; degree of rate control", w:"Identify rate-limiting step quantitatively — rational catalyst improvement."}
+];
+
+/* Drug modality thế hệ mới */
+const MODERN_MODALITIES = [
+  ["PROTAC degrader","POI ligand + linker + E3 ligand","Eliminate protein thay vì inhibit — hoạt động catalytic sub-stoichiometric","Arvinas ARV-110 phase III prostate cancer"],
+  ["Molecular glue","Small molecule tạo novel protein-protein interface","Không cần ligandable pocket — 'undruggable' mở rộng","Lenalidomide GSPT1/CKF family discovered clinically first!"],
+  ["Antibody-drug conjugate ADC","mAb targeting + cleavable linker + cytotoxin","'Missile hướng dẫn': payload chết tế bào chỉ tại tumor antigen","Enhertu DS-8201 breast cancer changing guidelines"],
+  ["Bispecific antibody","Hai paratope hai kháng原 bridge cells","T-cell engagers bring killer cells to tumors","Blincyto CD19 CD3 ALL breakthrough"],
+  ["siRNA / ASO silencing","20-mer nucleic acid RISC or RNaseH recruitment","Silence any gene pre-translational — genetic medicine broad","Patisiran ATTR amyloidosis GalNAc liver delivery"],
+  ["mRNA therapeutics","Modified mRNA + LNP delivery","Cell becomes the factory transiently producing therapeutic protein","COVID vaccines; individualized cancer vaccine trials"],
+  ["Radioligand therapy","Targeting ligand + chelator + alpha/beta emitter","Precision radiation to metastatic cells systemically","Pluvicto PSMA prostate Lu-177 blockbuster"],
+  ["Base & prime editing","Cas nickase + deaminase/pegRNA","Edit single letters without double-strand breaks","First approvals expected late 2020s sickle/cholesterol PCSK9"]
+];

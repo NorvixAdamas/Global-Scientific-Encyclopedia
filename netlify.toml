@@ -1,0 +1,36 @@
+# Netlify configuration — Global Scientific Encyclopedia V2.0
+# Static site: no build step, publish the repository root.
+
+[build]
+  publish = "."
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Sensible, non-breaking security headers. The browser talks directly to the
+# public scientific APIs below; no secrets are involved.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pubchem.ncbi.nlm.nih.gov; font-src 'self' data:; connect-src 'self' https://pubchem.ncbi.nlm.nih.gov https://www.ebi.ac.uk https://rest.uniprot.org https://reactome.org https://eutils.ncbi.nlm.nih.gov https://api.fda.gov https://rxnav.nlm.nih.gov https://api.crossref.org https://nomad-lab.eu https://api.materialsproject.org https://data.rcsb.org; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+# Data and documentation files: serve as text, never as HTML.
+[[headers]]
+  for = "/*.md"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Content-Disposition = "inline"
+
+[[headers]]
+  for = "/data/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
